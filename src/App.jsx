@@ -3,16 +3,12 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, Routes, Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-
 
 // Pages
 import Home from "./Pages/Home.jsx";
 import Donor from "./Pages/Donor.jsx";
 import Receiver from "./Pages/Receiver.jsx";
 import Loading from "./Pages/Loading.jsx";
-import SignUp from "./Pages/SignUp.jsx";
-import Login from "./Pages/Login.jsx";
 
 // Components
 import About from "./components/About.jsx";
@@ -29,52 +25,19 @@ const PageWrapper = ({ children }) => (
     {children}
   </motion.div>
 );
+
 const AnimatedRoutes = () => {
   const location = useLocation();
-  const isAuthenticated = !!localStorage.getItem("token"); // check if user logged in
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* Default route */}
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <PageWrapper><Home /></PageWrapper>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+        <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
 
-        {/* Auth pages */}
-        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-        <Route path="/signup" element={<PageWrapper><SignUp /></PageWrapper>} />
-
-        {/* Protected routes */}
-        <Route
-          path="/Donor"
-          element={
-            isAuthenticated ? (
-              <PageWrapper><Donor /></PageWrapper>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/Receiver"
-          element={
-            isAuthenticated ? (
-              <PageWrapper><Receiver /></PageWrapper>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-
-        {/* Public pages */}
+        {/* Main pages */}
+        <Route path="/Donor" element={<PageWrapper><Donor /></PageWrapper>} />
+        <Route path="/Receiver" element={<PageWrapper><Receiver /></PageWrapper>} />
         <Route path="/About" element={<PageWrapper><About /></PageWrapper>} />
         <Route path="/Contact-Us" element={<PageWrapper><ContactUs /></PageWrapper>} />
         <Route path="/Loading" element={<PageWrapper><Loading /></PageWrapper>} />
@@ -90,7 +53,6 @@ const App = () => {
 
   return (
     <div className="text-default min-h-screen bg-white">
-
       <AnimatedRoutes />
     </div>
   );
